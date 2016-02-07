@@ -1,20 +1,17 @@
 [=[
 Class: Lang
 A static class used for dealing with translated messages.
-
-Revisions:
-	4.0.0 - Initial.
 ]=]
 class ulx.Lang
-	@CurrentLanguage: "english"
-	@BackupLanguage: "english"
+	@CurrentLanguage: nil
+	@BackupLanguage: nil
 	@Phrases: {}
 	@Mutators: {}
 
 	parseAndVerifyLangTxt = (txt using nil) ->
 		phrases = util.JSONToTable txt
 		if not phrases
-			return false, "unable to parse JSON"
+			return false, "Unable to parse JSON"
 
 		types = tableshape.types
 		dictionary = types.map_of types.string, types.string
@@ -24,6 +21,23 @@ class ulx.Lang
 			return false, err
 
 		return phrases
+
+	loadPhrasesForLang = (lang using nil) ->
+		langFiles = ulx.Directory.GetFiles("locale", lang .. ".json", true)
+		phraseAccum = {}
+
+		if #langFiles == 0
+			return false, "Language files do not exist"
+
+		for langFile in *langFiles
+			txt = ulx.File.ReadAllText langFile
+			phrases, err = parseAndVerifyLangTxt txt
+			if not phrases
+				print err
+				--log.warn "invalid..." -- TODO
+				continue
+			ulx.TableX.UnionByKey phraseAccum, phrases, true
+		return phraseAccum
 
 	init = () ->
 		configLang = ulx.CoreConfig.Language
@@ -42,25 +56,24 @@ class ulx.Lang
 	Function: SetLanguage
 	TODO
 	]=]
-	@SetLanguage: (language using nil) ->
-		language = language\lower!
-		@CurrentLanguage = language
-		langFiles = ulx.Directory.GetFiles("locale", language .. ".json", true)
-		phraseAccum = {}
+	@SetLanguage: (language, backupLanguage="english" using nil) ->
+		ulx.UtilX.CheckArg "Language.SetLanguage", 1, "string", language
+		ulx.UtilX.CheckArg "Language.SetLanguage", 2, "string", backupLanguage
 
-		if #langFiles == 0
-			return false
+		@CurrentLanguage = language\lower!
+		@BackupLanguage = backupLanguage\lower!
 
-		for langFile in *langFiles
-			txt = ulx.File.ReadAllText langFile
-			phrases, err = parseAndVerifyLangTxt txt
-			if not phrases
-				print err
-				--log.warn "invalid..." -- TODO
-				continue
-			ulx.TableX.UnionByKey phraseAccum, phrases, true
+		primaryPhrases, errPrimary = loadPhrasesForLang @CurrentLanguage
 
-		@Phrases = phraseAccum
+		if @BackupLanguage ~= @CurrentLanguage
+			secondaryPhrases, errSecondary = loadPhrasesForLang @BackupLanguage
+			if secondaryPhrases
+				primaryPhrases = ulx.TableX.UnionByKey secondaryPhrases, primaryPhrases or {}, true
+
+		if not primaryPhrases
+			return false, errPrimary
+
+		@Phrases = primaryPhrases
 		return true
 
 	[=[
@@ -76,6 +89,9 @@ class ulx.Lang
 	]=]
 	@GetMutatedPhrase: (phraseName, data using nil) ->
 		phrase = @.GetPhrase phraseName
+		if not phrase
+			return nil
+
 		mutatedPhrase = phrase\gsub "{.-}", (placeholder using nil) ->
 			processPlaceholder(placeholder, data)
 		ulx.UtilX.Trim mutatedPhrase

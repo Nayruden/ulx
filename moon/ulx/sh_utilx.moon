@@ -4,12 +4,26 @@ A static class used for utility functions that are not specific to Garry's Mod.
 
 Depends On:
 	* <TableX>
-	* Moon standard library
-
-Revisions:
-	4.0.0 - Initial.
 ]=]
 class ulx.UtilX
+	[=[
+	Function: Type
+	Taken from Moonscript's library (moon.type). This is identical to Lua's type, just made Moonscript class-aware.
+
+	Parameters:
+		value - The value of *any type* to check.
+
+	Returns:
+		If value is a Moonscript class, returns a *table* of the class table. Otherwise returns a *string* describing the type (just like standard Lua).
+	]=]
+	@Type: (value) -> -- the moonscript object class
+		base_type = type value
+		if base_type == "table"
+			cls = value.__class
+			return cls if cls
+		base_type
+
+
 	[=[
 	Function: Trim
 	Trims leading and tailing whitespace from a string.
@@ -22,9 +36,6 @@ class ulx.UtilX
 
 	Notes:
 		* This is 'trim6' from <http://lua-users.org/wiki/StringTrim>.
-
-	Revisions:
-		4.0.0 - Initial.
 	]=]
 	@Trim: (str using nil) ->
 		str\match("^()%s*$") and "" or str\match("^%s*(.*%S)")
@@ -33,9 +44,6 @@ class ulx.UtilX
 	[=[
 	Function: LTrim
 	Exactly like <Trim> except it only trims the left side. Taken from <http://lua-users.org/wiki/CommonFunctions>
-
-	Revisions:
-		4.0.0 - Initial.
 	]=]
 	@LTrim: (str using nil) ->
 		(str\gsub("^%s*", ""))
@@ -44,9 +52,6 @@ class ulx.UtilX
 	[=[
 	Function: RTrim
 	Exactly like <Trim> except it only trims the right side. Taken from <http://lua-users.org/wiki/CommonFunctions>
-
-	Revisions:
-		4.0.0 - Initial.
 	]=]
 	@RTrim: (str using nil) ->
 		n = #str
@@ -110,9 +115,6 @@ class ulx.UtilX
 		* A string will always be surrounded by quotes and a number will always stand by itself. This is to make it easier to identify numbers stored as strings.
 		* Array size and total size are shown in the table header. Array size is the result of the pound operator (#) on the table, total size is the result of <Count>.
 		  Array size is useful debug information when iterating over a table with ipairs or fori.
-
-	Revisions:
-		v4.0.0 - Initial.
 	]=]
 	@Vardump: (... using nil) ->
 		str = ""
@@ -149,9 +151,6 @@ class ulx.UtilX
 
 	Returns:
 		The rounded *number*.
-
-	Revisions:
-		4.0.0 - Initial.
 	]=]
 	@Round: (num, places=0 using nil) ->
 		mult = 10 ^ places
@@ -159,6 +158,7 @@ class ulx.UtilX
 
 
 	timeCodesRaw =
+		second: 1
 		minute: 60
 		hour: 60 * 60
 		day: 60 * 60 * 24
@@ -192,15 +192,18 @@ class ulx.UtilX
 			phrase = ulx.Lang.GetPhrase phraseName
 			timeCodes[phrase] = value
 	[=[
-	Function: TimeStringToSeconds
-	A natural language time string to convert into seconds. Can accept minutes, hours, days, weeks, months, or years.
+	Function: TimeStringToNumber
+	A natural language time string to convert into a number of time units (like seconds).
+	Can accept minutes, hours, days, weeks, months, or years in the time string.
 	Amounts can be fractional and positive or negative. See examples below.
 
 	Parameters:
-		str - The *string* or *number* to convert to seconds. If it's a number, it's simply passed back.
+		str - The *string* or *number* to convert to a time unit. If it's a number, it's simply passed back.
+		unit - The *string* time unit to conver to, defaults to _"second"_.
+		        Must one of the following values -- "second", "minute", "hour", "day", "week", "month", "year".
 
 	Returns:
-		The *number* of seconds.
+		The *number* of time units.
 
 	Examples:
 		All of the following return the same number of seconds...
@@ -216,12 +219,11 @@ class ulx.UtilX
 	Notes:
 		* Commas and spacing are ignored.
 		* Any time multiplier that isn't recognized or supported (E.G., milliseconds) will be considered to be seconds.
-
-	Revisions:
-		4.0.0 - Initial.
 	]=]
-	@TimeStringToSeconds: (str using nil) ->
-		@.CheckArg "TimeStringToSeconds", 1, {"string", "number"}, str
+	@TimeStringToNumber: (str, unit="second" using nil) ->
+		@.CheckArg "TimeStringToNumber", 1, {"string", "number"}, str
+		@.CheckArg "TimeStringToNumber", 2, "string", unit
+		assert timeCodesRaw[unit], "TimeStringToNumber given an invalid time unit to convert to"
 
 		if timeCodes.CurrentLanguage ~= ulx.Lang.CurrentLanguage -- TODO, better way of hooking language changes
 			fillTimeCodes!
@@ -247,9 +249,9 @@ class ulx.UtilX
 			codeIdx = str\find "[^-\\.%d]", startIdx
 
 			if not codeIdx and startIdx < len
-				num += tonumber(str\sub startIdx)
+				num += tonumber(str\sub startIdx) * timeCodesRaw[unit]
 
-		num
+		return num / timeCodesRaw[unit]
 
 
 	-- Transforms the "expected" argument for functions below into a list of strings.
@@ -265,19 +267,16 @@ class ulx.UtilX
 	Parameters:
 		fnName   - The *optional string* of the function name being called.
 		argnum   - The *optional number* of the argument that was bad.
-		expected - The *optional string, class (via moon.type), or list* of the type(s) you expected.
+		expected - The *optional string, class (via <Type>), or list* of the type(s) you expected.
 		data     - *Optional and any type*, the actual data you got.
 		level    - The *optional number* of how many levels up (from this function) to throw the error. Defaults to _1_.
 
 	Returns:
 		Always returns using *<Raise()>*.
-
-	Revisions:
-		4.0.0 - Initial.
 	]=]
 	@RaiseBadArg: (fnName, argnum, expected, data, level=1 using nil) ->
-		expected = { expected } if expected and moon.type(expected) ~= "table"
-		dataStr = moon.type(data)
+		expected = { expected } if expected and @.Type(expected) ~= "table"
+		dataStr = @.Type(data)
 		dataStr = data.__class.__name if type(dataStr) ~= "string"
 
 		str = "bad argument"
@@ -306,7 +305,7 @@ class ulx.UtilX
 	Parameters:
 		fnName   - The *optional string* of the function name being called.
 		argnum   - The *optional number* of the argument that was bad.
-		expected - The *optional string, class (via moon.type), or list* of the type(s) you expected.
+		expected - The *optional string, class (via <Type>), or list* of the type(s) you expected.
 		data     - *Optional and any type*, the actual data you got.
 		level    - The *optional number* of how many levels up (from this function) to throw the error. Defaults to _1_.
 
@@ -319,16 +318,13 @@ class ulx.UtilX
 		returns...
 
 		:true
-
-	Revisions:
-		4.0.0 - Initial.
 	]=]
 	@CheckArg: (fnName, argnum, expected, data, level=1 using nil) ->
 		if expected == nil return true
-		if moon.type(expected) ~= "table"
-			if expected == moon.type(data)
+		if @.Type(expected) ~= "table"
+			if expected == @.Type(data)
 				return true
-		elseif ulx.TableX.HasValueI(expected, moon.type(data)) then
+		elseif ulx.TableX.HasValueI(expected, @.Type(data)) then
 			return true
 
 		@.RaiseBadArg fnName, argnum, expected, data, level+1
@@ -354,9 +350,6 @@ class ulx.UtilX
 		returns...
 
 		:true
-
-	Revisions:
-		4.0.0 - Initial.
 	]=]
 	@CheckArgs: (fnName, args, level=1 using nil) ->
 		for argnum=1, #args
@@ -387,9 +380,6 @@ class ulx.UtilX
 		returns...
 
 		:{ "This", "is", "a", "sentence" }
-
-		Revisions:
-			4.0.0 - Initial.
 	]=]
 	@Explode: (separator, str, limit using nil) ->
 		t = {}
@@ -431,9 +421,6 @@ class ulx.UtilX
 	Notes:
 		* Mismatched quotes will result in having the last quote grouping the remaining input into one argument.
 		* Args outside of quotes are trimmed (via string.Trim), while args inside quotes is not trimmed at all.
-
-	Revisions:
-		4.0.0 - Initial.
 	]=]
 	@SplitArgs: (args, startToken='"', endToken='"' using nil) ->
 		args = @.Trim args
