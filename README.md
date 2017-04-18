@@ -1,5 +1,7 @@
 # ULX #
 
+[![Join the chat at https://gitter.im/TeamUlysses/ulx4](https://badges.gitter.im/TeamUlysses/ulx4.svg)](https://gitter.im/TeamUlysses/ulx4?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/TeamUlysses/ulx4.svg?branch=master)](https://travis-ci.org/TeamUlysses/ulx4)
 
 ### NOTE: This version of ULX is in early development, and is not currently a full replacement for ULX 3. Do not run this on your servers yet! ###
