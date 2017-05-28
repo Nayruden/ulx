@@ -33,5 +33,5 @@
 	"ARG_INCORRECT_TYPE": "No está un(a) {TYPE} (dado '{GIVEN}')",
 
 	"ARGNUM_BELOW_MIN": "Debajo del mínimo ({MIN})",
-	"ARGNUM_ABOVE_MAX": "Sobre del máximo ({MAX})"
+	"ARGNUM_ABOVE_MAX": "Más del máximo ({MAX})"
 }
