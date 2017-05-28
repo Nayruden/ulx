@@ -30,7 +30,7 @@
 
 	"ARG_NOT_SPECIFIED": "Argumento obligatorio no especificado",
 	"ARG_CANNOT_PARSE": "No se puede analizar '{GIVEN}' a {TYPE}",
-	"ARG_INCORRECT_TYPE": "No está un(a) {TYPE} (dado '{GIVEN}')",
+	"ARG_INCORRECT_TYPE": "No es un(a) {TYPE} (dado '{GIVEN}')",
 
 	"ARGNUM_BELOW_MIN": "Debajo del mínimo ({MIN})",
 	"ARGNUM_ABOVE_MAX": "Más del máximo ({MAX})"
