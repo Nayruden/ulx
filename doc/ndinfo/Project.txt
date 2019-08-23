@@ -37,7 +37,7 @@ Timestamp: Generated on d month, year
 # Source Code
 # ------------------------------------------------------------------------
 
-Source Folder: ..\..
+Source Folder: ../..
 
 
 
