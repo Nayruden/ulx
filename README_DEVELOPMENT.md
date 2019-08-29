@@ -80,7 +80,7 @@ Note: LuaRocks requires [Visual Studio (free)](https://www.visualstudio.com/prod
  luarocks install LuaSocket
  ```
 
-2. If you do NOT have Visual Studio installed, then download the latest [Moonscript binaries here](http://moonscript.org/#windows_binaries). Extract the files into a folder within your %PATH%, like your LuaRocks bin folder: `C:\luarocks\systree\bin`, or add a new entry to %PATH%.
+2. If you do NOT have Visual Studio installed, then download the latest [Moonscript binaries here](https://moonscript.org/#installation/windows-binaries). Extract the files into a folder within your %PATH%, like your LuaRocks bin folder: `C:\luarocks\systree\bin`, or add a new entry to %PATH%.
 
 ### Busted (Optional) ###
 1. Open the [Visual Studio Command Prompt](https://msdn.microsoft.com/en-us/library/ms229859%28v=vs.110%29.aspx) (Required) and use LuaRocks to install Busted:
@@ -97,7 +97,7 @@ Note: LuaRocks requires [Visual Studio (free)](https://www.visualstudio.com/prod
 
 ### PlantUML (Optional) ###
 1. PlantUML requires the [Java Runtime Environment (JRE)](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html).
-2. PlantUML also requires GraphViz. [Download the latest version here](http://www.graphviz.org/Download_windows.php), and extract it to a location that can be accessed via %PATH%, or add a new entry to %PATH%.
+2. PlantUML also requires GraphViz. [Download the latest version here](https://graphviz.gitlab.io/_pages/Download/Download_windows.html), and extract it to a location that can be accessed via %PATH%, or add a new entry to %PATH%.
 3. Add a new environment variable called `GRAPHVIZ_DOT`, and set it to point to dot.exe in your graphviz directory: `E:\graphviz\bin\dot.exe;`
 4. [Download the latest version of PlantUML here](http://sourceforge.net/projects/plantuml/files/plantuml.jar/download).
 5. Put PlantUML in a location that can be accessed via %PATH%, or add a new entry to %PATH%.
