@@ -100,7 +100,7 @@ Note: LuaRocks requires [Visual Studio (free)](https://www.visualstudio.com/prod
 2. PlantUML also requires GraphViz. [Download the latest version here](http://www.graphviz.org/Download_windows.php), and extract it to a location that can be accessed via %PATH%, or add a new entry to %PATH%.
 3. Add a new environment variable called `GRAPHVIZ_DOT`, and set it to point to dot.exe in your graphviz directory: `E:\graphviz\bin\dot.exe;`
 4. [Download the latest version of PlantUML here](http://sourceforge.net/projects/plantuml/files/plantuml.jar/download).
-5. Put PlantUML in a loaction that can be accessed via %PATH%, or add a new entry to %PATH%.
+5. Put PlantUML in a location that can be accessed via %PATH%, or add a new entry to %PATH%.
 6. Create a `plantuml.bat` file in the same directory, and fill it with the following contents. Replace `E:\PlantUML` with the location you put it:
 
  ```
