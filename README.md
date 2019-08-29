@@ -4,7 +4,7 @@
 
 ### NOTE: This version of ULX is in early development, and is not currently a full replacement for ULX 3. Do not run this on your servers yet! ###
 
-ULX is an addon for [Garry's Mod](http://garrysmod.com). Insert some witty and concise description here.
+ULX is an addon for [Garry's Mod](https://gmod.facepunch.com). Insert some witty and concise description here.
 
 ULX is licensed under the MIT license. For an easy-to-understand summary of the license, please check out [tl;dr Legal](https://tldrlegal.com/license/mit-license).
 
@@ -67,7 +67,7 @@ This is necessary since vanilla Lua only implements very basic file I/O function
 [Natural Docs](http://naturaldocs.org) - Documentation generator.
 Natural Docs generates ULX documentation from comments in the source code and is available online at http://ulyssesmod.net/ulx4-doc.
 
-[PlantUML](http://plantuml.sf.net) - Generates [Unified Modeling Language (UML)](http://www.uml.org/) diagrams from plain-text descriptions.
+[PlantUML](http://plantuml.com) - Generates [Unified Modeling Language (UML)](http://www.uml.org) diagrams from plain-text descriptions.
 This allows us to quickly document ULX source structure without the hassle of a graphical UML editor.
 
 

@@ -53,7 +53,7 @@ sudo chmod 755 /usr/local/bin/plantuml
 Getting a development environment set up for Windows is currently a bit of a hassle. Keep in mind that Moonscript is the only real dependency you need for active development. The testing and documentation generation can be easily done on a Linux or Mac machine/server/VM if you have one available.
 
 ### Lua 5.1 (Required) w/ LuaRocks ###
-Note: LuaRocks requires [Visual Studio (free)](https://www.visualstudio.com/products/visual-studio-community-vs) installed to compile binaries. LuaRocks makes installing some dependencies very easy. If you do not plan on installing Visual Studio, then you may choose to [install Lua5.1 binaries manually instead](luabinaries.sourceforge.net/download.html). We chose to keep LuaRocks in the setup guide as setup is straightforward, and it comes bundled with Lua5.1 binaries.
+Note: LuaRocks requires [Visual Studio (free)](https://visualstudio.microsoft.com/vs/community/) installed to compile binaries. LuaRocks makes installing some dependencies very easy. If you do not plan on installing Visual Studio, then you may choose to [install Lua5.1 binaries manually instead](http://luabinaries.sourceforge.net/download.html). We chose to keep LuaRocks in the setup guide as setup is straightforward, and it comes bundled with Lua5.1 binaries.
 
 1. [Download LuaRocks for Windows](http://keplerproject.github.io/luarocks/releases/luarocks-2.2.0-win32.zip)
 2. Use steps 3-4 below for a simple self-contained install of LuaRocks, **-OR-** follow [LuaRocks' installation instructions for windows](https://github.com/keplerproject/luarocks/wiki/Installation-instructions-for-Windows).
@@ -73,7 +73,7 @@ Note: LuaRocks requires [Visual Studio (free)](https://www.visualstudio.com/prod
 `C:\luarocks\systree\lib\lua\5.1\?.dll;`
 
 ### Moonscript (Required) w/ LuaSocket ###
-1. If you have Visual Studio installed, simply run the following two commands in your [Visual Studio Command Prompt](https://msdn.microsoft.com/en-us/library/ms229859%28v=vs.110%29.aspx):
+1. If you have Visual Studio installed, simply run the following two commands in your [Visual Studio Command Prompt](https://docs.microsoft.com/en-us/dotnet/framework/tools/developer-command-prompt-for-vs):
 
  ```
  luarocks install moonscript
@@ -83,7 +83,7 @@ Note: LuaRocks requires [Visual Studio (free)](https://www.visualstudio.com/prod
 2. If you do NOT have Visual Studio installed, then download the latest [Moonscript binaries here](https://moonscript.org/#installation/windows-binaries). Extract the files into a folder within your %PATH%, like your LuaRocks bin folder: `C:\luarocks\systree\bin`, or add a new entry to %PATH%.
 
 ### Busted (Optional) ###
-1. Open the [Visual Studio Command Prompt](https://msdn.microsoft.com/en-us/library/ms229859%28v=vs.110%29.aspx) (Required) and use LuaRocks to install Busted:
+1. Open the [Visual Studio Command Prompt](https://docs.microsoft.com/en-us/dotnet/framework/tools/developer-command-prompt-for-vs) (Required) and use LuaRocks to install Busted:
 
  `luarocks install busted`
 
